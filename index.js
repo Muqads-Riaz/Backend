@@ -21,6 +21,8 @@ mongoose.connect(dbURi)
   })
 
 
+
+                           //Dummy
 //Create and Send Data To mongodb 
 // app.post("/user" , (req , res)=>{
 //   const obj = req.body
@@ -112,6 +114,11 @@ mongoose.connect(dbURi)
 //   })
 // })
 
+
+
+
+                       //Signup & Login
+
 //Signup User
 app.post("/signup", (req, res) => {
   const { firstName, lastName, password, email } = req.body
@@ -199,6 +206,11 @@ app.post("/login", (req, res) => {
 
 })
 
+
+
+
+
+                             //Todo
 //Create Todo
 app.post("/todos", (req, res) => {
   const { todo } = req.body
@@ -293,38 +305,73 @@ app.put("/todos/:id", (req, res) => {
   }
 })
 
+
+
+
+                            //Cart
+//Cart Collection
+app.get("/card", (req, res) => {
+  cardModel.find({}, (error, data) => {
+    if (error) {
+      res.json({
+        message: "Internal Error",
+        status: "false"
+      })
+    } else {
+      res.json({
+        message: "Data Get Successfully",
+        data: data,
+        status: "true"
+      })
+    }
+  })
+})
 //Add to Cart
 app.post("/card", (req, res) => {
   const { img, name, text, color, size, rating, price } = req.body
-  if (!img || !name || !text || !color || !size || !rating || !price) {
+  if (!img || !name || !text || !color || !size || !rating || !price){
     res.json({
       message: "Required fields are missing",
       status: "false"
     })
   } else {
-    const objToSend = {
-      img: img,
-      name: name,
-      text: text,
-      color: color,
-      size: size,
-      rating: rating,
-      price: price
-    }
-    cardModel.create(objToSend, (error, data) => {
+ cardModel.findOne({ name: name }, (error, data) => {
       if (error) {
         res.json({
           message: "Internal Error",
           status: "false"
         })
-      } else {
+      } else if(data){
         res.json({
-          message: "Add to cart successfully",
-          data: data,
+          message: "Already added to cart",
           status: "false"
         })
+      }else{
+        const objToSend = {
+          img: img,
+          name: name,
+          text: text,
+          color: color,
+          size: size,
+          rating: rating,
+          price: price
+        }
+        cardModel.create(objToSend, (error, data) => {
+          if (error) {
+            res.json({
+              message: "Internal Error",
+              status: "false"
+            })
+          } else {
+            res.json({
+              message: "Add to cart successfully",
+              data: data,
+              status: "true"
+            })
+          }
+        })
       }
-    })
+  }) 
   }
 })
 //Remove from Cart
@@ -344,6 +391,28 @@ app.delete("/card/:id", (req, res) => {
     }
   })
 })
+
+
+
+
+                         //Wishlist
+//WishList Collection
+app.get("/wishCard", (req, res) => {
+  wishCardModel.find({}, (error, data) => {
+    if (error) {
+      res.json({
+        message: "Internal Error",
+        status: "false"
+      })
+    } else {
+      res.json({
+        message: "Data Get Successfully",
+        data: data,
+        status: "true"
+      })
+    }
+  })
+})
 //Add to Wishlist
 app.post("/wishCard", (req, res) => {
   const { img, name, text, color, size, rating, price } = req.body
@@ -352,30 +421,55 @@ app.post("/wishCard", (req, res) => {
       message: "Required fields are missing",
       status: "false"
     })
-  } else {
-    const objToSend = {
-      img: img,
-      name: name,
-      text: text,
-      color: color,
-      size: size,
-      rating: rating,
-      price: price
-    }
-    wishCardModel.create(objToSend, (error, data) => {
+  }else {
+    wishCardModel.findOne({ name: name }, (error, data) => {
       if (error) {
         res.json({
           message: "Internal Error",
           status: "false"
         })
-      } else {
+      } else if(data){
         res.json({
-          message: "Add to wishlist successfully",
-          data: data,
+          message: "Already added to cart",
           status: "false"
         })
+      }else{
+        const objToSend = {
+          img: img,
+          name: name,
+          text: text,
+          color: color,
+          size: size,
+          rating: rating,
+          price: price
+        }
+        wishCardModel.create(objToSend, (error, data) => {
+          if (error) {
+            res.json({
+              message: "Internal Error",
+              status: "false"
+            })
+          } else {
+            res.json({
+              message: "Add to wishlist successfully",
+              data: data,
+              status: "true"
+            })
+          }
+        })
+
       }
     })
+
+    
+   
+
+
+
+
+
+
+
   }
 })
 //Remove from wishlist
