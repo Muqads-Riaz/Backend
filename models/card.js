@@ -6,6 +6,7 @@ const cardSchema = mongoose.Schema({
     color : String ,
     size : String ,
     rating : String ,
+    price : String ,
 })
 const cardModel = mongoose.model("card" , cardSchema)
 module.exports = cardModel

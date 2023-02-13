@@ -295,8 +295,8 @@ app.put("/todos/:id", (req, res) => {
 
 //Add to Cart
 app.post("/card", (req, res) => {
-  const { img , name , text , color , size , rating } = req.body
-  if (!img || !name || !text || !color || !size || !rating){
+  const { img, name, text, color, size, rating, price } = req.body
+  if (!img || !name || !text || !color || !size || !rating || !price) {
     res.json({
       message: "Required fields are missing",
       status: "false"
@@ -304,11 +304,12 @@ app.post("/card", (req, res) => {
   } else {
     const objToSend = {
       img: img,
-      name : name, 
-      text : text, 
-      color : color, 
-      size : size, 
-      rating : rating
+      name: name,
+      text: text,
+      color: color,
+      size: size,
+      rating: rating,
+      price: price
     }
     cardModel.create(objToSend, (error, data) => {
       if (error) {
@@ -345,8 +346,8 @@ app.delete("/card/:id", (req, res) => {
 })
 //Add to Wishlist
 app.post("/wishCard", (req, res) => {
-  const { img , name , text , color , size , rating } = req.body
-  if (!img || !name || !text || !color || !size || !rating){
+  const { img, name, text, color, size, rating, price } = req.body
+  if (!img || !name || !text || !color || !size || !rating || !price) {
     res.json({
       message: "Required fields are missing",
       status: "false"
@@ -354,11 +355,12 @@ app.post("/wishCard", (req, res) => {
   } else {
     const objToSend = {
       img: img,
-      name : name, 
-      text : text, 
-      color : color, 
-      size : size, 
-      rating : rating
+      name: name,
+      text: text,
+      color: color,
+      size: size,
+      rating: rating,
+      price: price
     }
     wishCardModel.create(objToSend, (error, data) => {
       if (error) {
