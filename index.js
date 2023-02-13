@@ -3,12 +3,15 @@ const cors = require("cors")
 const app = express()
 const PORT = process.env.PORT || 5000
 const dbURi = "mongodb+srv://Muqads:Muqads123@cluster0.zh5ajuh.mongodb.net/?retryWrites=true&w=majority"
+// const base_url = "https://smiling-suit-moth.cyclic.app"
 app.use(express.json())
 app.use(cors())
 const mongoose = require("mongoose")
 const userModel = require("./models/user")
 const signupUsers = require("./models/signup")
 const todoModel = require("./models/todo")
+const cardModel = require("./models/card")
+const wishCardModel = require("./models/wishCards")
 var bcrypt = require('bcryptjs');
 mongoose.connect(dbURi)
   .then((res) => {
@@ -290,6 +293,106 @@ app.put("/todos/:id", (req, res) => {
   }
 })
 
+//Add to Cart
+app.post("/card", (req, res) => {
+  const { img , name , text , color , size , rating } = req.body
+  if (!img || !name || !text || !color || !size || !rating){
+    res.json({
+      message: "Required fields are missing",
+      status: "false"
+    })
+  } else {
+    const objToSend = {
+      img: img,
+      name : name, 
+      text : text, 
+      color : color, 
+      size : size, 
+      rating : rating
+    }
+    cardModel.create(objToSend, (error, data) => {
+      if (error) {
+        res.json({
+          message: "Internal Error",
+          status: "false"
+        })
+      } else {
+        res.json({
+          message: "Add to cart successfully",
+          data: data,
+          status: "false"
+        })
+      }
+    })
+  }
+})
+//Remove from Cart
+app.delete("/card/:id", (req, res) => {
+  const { id } = req.params
+  cardModel.findByIdAndDelete(id, (error, data) => {
+    if (error) {
+      res.json({
+        message: "Internal Error",
+        status: "false"
+      })
+    } else {
+      res.json({
+        message: "Removed from cart",
+        status: "true"
+      })
+    }
+  })
+})
+//Add to Wishlist
+app.post("/wishCard", (req, res) => {
+  const { img , name , text , color , size , rating } = req.body
+  if (!img || !name || !text || !color || !size || !rating){
+    res.json({
+      message: "Required fields are missing",
+      status: "false"
+    })
+  } else {
+    const objToSend = {
+      img: img,
+      name : name, 
+      text : text, 
+      color : color, 
+      size : size, 
+      rating : rating
+    }
+    wishCardModel.create(objToSend, (error, data) => {
+      if (error) {
+        res.json({
+          message: "Internal Error",
+          status: "false"
+        })
+      } else {
+        res.json({
+          message: "Add to wishlist successfully",
+          data: data,
+          status: "false"
+        })
+      }
+    })
+  }
+})
+//Remove from wishlist
+app.delete("/wishCard/:id", (req, res) => {
+  const { id } = req.params
+  wishCardModel.findByIdAndDelete(id, (error, data) => {
+    if (error) {
+      res.json({
+        message: "Internal Error",
+        status: "false"
+      })
+    } else {
+      res.json({
+        message: "Removed from wishlist",
+        status: "true"
+      })
+    }
+  })
+})
 
 
 
