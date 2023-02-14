@@ -328,8 +328,8 @@ app.get("/card", (req, res) => {
 })
 //Add to Cart
 app.post("/card", (req, res) => {
-  const { img, name, text, color, size, rating, price } = req.body
-  if (!img || !name || !text || !color || !size || !rating || !price){
+  const { img, name, text, color, size, rating, price , quantity } = req.body
+  if (!img || !name || !text || !color || !size || !rating || !price || !quantity){
     res.json({
       message: "Required fields are missing",
       status: "false"
@@ -343,8 +343,9 @@ app.post("/card", (req, res) => {
         })
       } else if(data){
         res.json({
-          message: "Already added to cart",
-          status: "false"
+          quantity : quantity + 1,
+          message: "Add to cart successfully",
+          status: "true"
         })
       }else{
         const objToSend = {
@@ -354,7 +355,8 @@ app.post("/card", (req, res) => {
           color: color,
           size: size,
           rating: rating,
-          price: price
+          price: price,
+          quantity : quantity,
         }
         cardModel.create(objToSend, (error, data) => {
           if (error) {
@@ -415,8 +417,8 @@ app.get("/wishCard", (req, res) => {
 })
 //Add to Wishlist
 app.post("/wishCard", (req, res) => {
-  const { img, name, text, color, size, rating, price } = req.body
-  if (!img || !name || !text || !color || !size || !rating || !price) {
+  const { img, name, text, color, size, rating, price , quantity } = req.body
+  if (!img || !name || !text || !color || !size || !rating || !price || !quantity) {
     res.json({
       message: "Required fields are missing",
       status: "false"
@@ -430,7 +432,7 @@ app.post("/wishCard", (req, res) => {
         })
       } else if(data){
         res.json({
-          message: "Already added to cart",
+          message: "Already added to wishlist",
           status: "false"
         })
       }else{

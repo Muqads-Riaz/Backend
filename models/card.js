@@ -7,6 +7,7 @@ const cardSchema = mongoose.Schema({
     size : String ,
     rating : String ,
     price : String ,
+    quantity : String ,
 })
 const cardModel = mongoose.model("card" , cardSchema)
 module.exports = cardModel

@@ -7,6 +7,7 @@ const wishCardSchema = mongoose.Schema({
     size : String ,
     rating : String ,
     price : String ,
+    quantity : String ,
 })
 const wishCardModel = mongoose.model("wishCard" , wishCardSchema)
 module.exports = wishCardModel
