@@ -12,6 +12,7 @@ const signupUsers = require("./models/signup")
 const todoModel = require("./models/todo")
 const cardModel = require("./models/card")
 const wishCardModel = require("./models/wishCards")
+const requesterModel = require("./models/requester")
 var bcrypt = require('bcryptjs');
 mongoose.connect(dbURi)
   .then((res) => {
@@ -491,6 +492,59 @@ app.delete("/wishCard/:id", (req, res) => {
       })
     }
   })
+})
+    
+
+
+//Requester
+app.get("/requester", (req, res) => {
+  requesterModel.find({}, (error, data) => {
+    if (error) {
+      res.json({
+        message: "Internal Error",
+        status: "false"
+      })
+    } else {
+      res.json({
+        message: "Data Get Successfully",
+        data: data,
+        status: "true"
+      })
+    }
+  })
+})
+
+
+app.post("/requester", (req, res) => {
+  const {currLatitude , currLongitude , category , subCategory , name } = req.body
+  if (!currLatitude || !currLongitude || !category || !subCategory || !name) {
+    res.json({
+      message: "Required fields are missing",
+      status: "false"
+    })
+  }else {
+        const objToSend = {
+          curr_latitude: currLatitude,
+          curr_longitude: currLongitude,
+          category: category,
+          sub_category: subCategory,
+          name: name
+        }
+        requesterModel.create(objToSend, (error, data) => {
+          if (error) {
+            res.json({
+              message: "Internal Error",
+              status: "false"
+            })
+          } else {
+            res.json({
+              message: "Data sent successfully",
+              data: data,
+              status: "true"
+            })
+          }
+        })
+  }
 })
 
                   
