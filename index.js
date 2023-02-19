@@ -191,6 +191,7 @@ app.post("/login", (req, res) => {
         if (comparePassword) {
           res.json({
             message: "User Login Successfully",
+            data : user ,
             status: "true"
           })
         } else {
@@ -492,6 +493,7 @@ app.delete("/wishCard/:id", (req, res) => {
   })
 })
 
+                  
 
 
 
